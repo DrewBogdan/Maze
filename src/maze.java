@@ -1,28 +1,37 @@
 import java.util.*;
 
 public class maze {
+
+	// Maze array used to create the maze.
 	public int[][] array;
+
 	static int count = 0;
 	static int playerX = 0;
 	static int playerY = 0;
-	
+
+	// Constructor to run the maze function
 	public maze(int sizeX, int sizeY) {
 		array = new int[sizeX][sizeY];
 		mazeMake(0,0);
 		array[sizeX-1][sizeY-1] = 3;
 	}
-	
+
+	// A few basic getters to use in the GUI
+
 	public int getCount() {
 		return count;
 	}
+
 	public int getY() {
 		return array.length-1;
 	}
+
 	public int getX() {
 		return array[0].length-1;
 	}
-	
-	
+
+
+	// iterates through and prints the maze to console
 	public void printMaze() {
 		for (int x = 0; x < array.length; x++) {
 			for (int y = 0; y < array[0].length; y++) {
@@ -38,6 +47,8 @@ public class maze {
 		}
 	}
 
+	// Recursive method to work through the array constantly checking if there is a possible maze at current position
+	// Utalizes recursive backtracking to consistently manevuer the maze
 	public boolean mazeMake(int row, int column) {
 		int rowL = array.length;
 		int colL = array[0].length;
@@ -45,7 +56,6 @@ public class maze {
 			if (!(row == rowL - 1 && column == colL - 1)) {
 				if (!(array[row][column] == 1)) {
 					count++;
-					// System.out.println(count);
 					ArrayList<Integer> leftover = new ArrayList<Integer>();
 					leftover.add(0);
 					leftover.add(1);
@@ -54,9 +64,11 @@ public class maze {
 					// 0 = up, 1 = down, 2 = left, 3 = right
 					while (leftover.size() > 0) {
 						Random rand = new Random();
+						// Utalizes random to make sure the maze is different every time in its choices
 						int randchoice = rand.nextInt(leftover.size());
 						int choice = leftover.get(randchoice);
 						leftover.remove(randchoice);
+
 						if (choice == 0) {
 							array[row][column] = 1;
 
@@ -66,6 +78,7 @@ public class maze {
 							array[row][column] = 0;
 
 						}
+
 						if (choice == 1) {
 							array[row][column] = 1;
 							if (column < array[0].length - 1 && column != 0) {
@@ -75,6 +88,7 @@ public class maze {
 							}
 							array[row][column] = 0;
 						}
+
 						if (choice == 2) {
 							array[row][column] = 1;
 							if (mazeMake(row, column + 1)) {
@@ -82,6 +96,7 @@ public class maze {
 							}
 							array[row][column] = 0;
 						}
+
 						if (choice == 3) {
 							array[row][column] = 1;
 							if (row < array.length - 1 && row != 0) {
@@ -105,7 +120,7 @@ public class maze {
 		return false;
 	}
 	
-	//helper method to move the player icon through array maze
+	// helper method to move the player icon through array maze
 	public void movePlayer() {
 		for (int x = 0; x < array.length; x++) {
 			for (int y = 0; y < array[0].length; y++) {
@@ -119,7 +134,7 @@ public class maze {
 	}
 	
 	
-	//basic move method
+	// basic move method
 	public void move(int input) {
 		if (input == 1) {
 	    	if(playerX > 0 && array[playerX-1][playerY] != 0) {
